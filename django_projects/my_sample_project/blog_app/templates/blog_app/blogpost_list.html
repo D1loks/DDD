@@ -1,0 +1,127 @@
+{% extends 'blog_app/base.html' %}
+
+{% block content %}
+<style>
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f9f9f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+    padding: 20px 0;
+}
+
+h2 {
+    color: #444;
+    margin-top: 20px;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+.text-muted {
+    color: #777;
+    font-size: 0.9rem;
+}
+
+.pagination {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.pagination .step-links a {
+    color: #007bff;
+    text-decoration: none;
+    margin: 0 5px;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.pagination .step-links a:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.pagination .current {
+    color: #555;
+    margin: 0 5px;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+}
+
+ul, li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+button, .btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+button:hover, .btn:hover {
+    background-color: #0056b3;
+}
+</style>
+
+<h2>All posts:</h2>
+   {% for blogpost in page_obj %}
+   <h2><a href="{{ blogpost.get_absolute_url }}">{{ blogpost.title }}</a></h2>
+   <p class="text-muted">
+    Published {{ blogpost.published_at }} by {{ blogpost.owner }}
+    </p>
+   {{ blogpost.text|truncatewords:30 }}
+
+   {% if blogpost.owner == user %}
+   ( <a href="{% url 'blog_app:update_post' blogpost.id %}">
+      Edit</a> |
+   <a href="{% url 'blog_app:delete_post' blogpost.id %}">
+      Delete</a>)
+   {% endif %}
+   <br/><br/>
+   {% endfor %}
+
+<div class="pagination">
+   <span class="step-links">
+       {% if page_obj.has_previous %}
+           <a href="?page=1">&laquo; first</a>
+           <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+       {% endif %}
+
+       <span class="current">
+           Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+       </span>
+
+       {% if page_obj.has_next %}
+           <a href="?page={{ page_obj.next_page_number }}">next</a>
+           <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+       {% endif %}
+   </span>
+</div>
+{% endblock %}

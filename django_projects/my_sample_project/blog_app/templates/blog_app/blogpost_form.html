@@ -1,0 +1,46 @@
+{% extends 'blog_app/base.html' %}
+
+{% load crispy_forms_tags %}
+{% block content %}
+<style>
+form {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    max-width: 600px;
+    margin: 20px auto;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+input[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: block;
+    margin: 10px auto;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.crispy-forms {
+    margin-bottom: 15px;
+}
+
+</style>
+
+<div class="container">
+    <form method="post">
+        {% csrf_token %}
+        {{ form | crispy }}
+        <input type="submit" value="Update">
+    </form>
+</div>
+{% endblock %}

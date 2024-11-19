@@ -1,0 +1,52 @@
+{% extends 'blog_app/base.html' %}
+
+{% block content %}
+<style>
+.container {
+    width: 50%;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+p {
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+form {
+    display: inline-block;
+    margin-top: 20px;
+}
+
+input[type="submit"] {
+    background-color: #d9534f;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #c9302c;
+}
+
+</style>
+
+<div class="container">
+    <p>Are you sure you want to delete "<strong>{{ blogpost.title }}</strong>"?</p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Confirm">
+    </form>
+</div>
+{% endblock %}

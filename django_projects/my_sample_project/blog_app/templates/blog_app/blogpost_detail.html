@@ -1,0 +1,82 @@
+{% extends 'blog_app/base.html' %}
+
+{% block content %}
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+    color: #444;
+}
+
+.text-muted {
+    color: #777;
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+
+.comment {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f4f4f4;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.comment .info {
+    font-size: 0.85rem;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+p {
+    line-height: 1.6;
+    margin: 10px 0;
+}
+</style>
+
+<div class="container">
+    <h1>{{ blogpost.title }}</h1>
+    <p>{{ blogpost.text }}</p>
+
+    <p class="text-muted">
+        <i>Author: {{ blogpost.owner }}</i><br/>
+        <i>Status: {{ blogpost.get_status_display }}</i><br/>
+        <i>Created at: {{ blogpost.created_at }}</i><br/>
+        <i>Published at: {{ blogpost.published_at }}</i><br/>
+        <i>Updated at: {{ blogpost.updated_at }}</i>
+    </p>
+
+    {% with blogpost.comments.count as total_comments %}
+    <h2>{{ total_comments }} comment{{ total_comments|pluralize }}:</h2>
+    {% endwith %}
+
+    {% for comment in blogpost.comments.all %}
+    <div class="comment">
+        <p class="info">
+            Comment {{ forloop.counter }} by {{ comment.name }} | {{ comment.created }}
+        </p>
+        <p>{{ comment.body|linebreaks }}</p>
+    </div>
+    {% empty %}
+    <p>There are no comments.</p>
+    {% endfor %}
+
+    {% include 'blog_app/includes/comment_form.html' with post=blogpost %}
+</div>
+{% endblock %}
